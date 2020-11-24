@@ -1,6 +1,8 @@
 import React from 'react'
 import { Table as BSTable } from 'react-bootstrap'
 
+import { data } from '../data'
+
 const Table = () => {
     return (
         <BSTable striped bordered hover size="sm">
@@ -13,18 +15,19 @@ const Table = () => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Doctor</td>
-                    <td>$200</td>
-                    <td>Health</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Food</td>
-                    <td>$30</td>
-                    <td>Basics</td>
-                </tr>
+                {
+                    data.map((item, idx) => {
+                        const { expense, amount, category } = item
+                        const price = amount < 0 ? `-$${Math.abs(amount)}` : `$${amount}`
+                        return <tr>
+                            <td>{idx + 1}</td>
+                            <td>{expense}</td>
+                            <td>{price}</td>
+                            <td>{category}</td>
+                        </tr>
+                    })
+                }
+
             </tbody>
         </BSTable>
     )
