@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { GlobalContext } from '../context/GlobalState'
 import { AiOutlineDelete } from 'react-icons/ai/'
+import { withCommas } from '../utils/format'
 
 const TableItem = ({ item, idx }) => {
 
@@ -13,7 +14,7 @@ const TableItem = ({ item, idx }) => {
         <tr>
             <td>{idx + 1}</td>
             <td>{expense}</td>
-            <td>{price}</td>
+            <td>{withCommas(price)}</td>
             <td>{category}</td>
             <td><AiOutlineDelete onClick={() => deleteTransaction(id)} /></td>
         </tr>

@@ -9,6 +9,13 @@ const Table = () => {
 
     const { transactions } = useContext(GlobalContext)
 
+    const display = transactions.length > 0
+        ? (transactions.map((item, idx) => (
+            <TableItem key={idx} item={item} idx={idx} />
+        ))) : (
+            <tr><td colspan="5">No items added yet</td></tr>
+        )
+
     return (
         <BSTable striped bordered hover size="sm">
             <thead>
@@ -21,9 +28,7 @@ const Table = () => {
                 </tr>
             </thead>
             <tbody>
-                {transactions.map((item, idx) => (
-                    <TableItem key={idx} item={item} idx={idx} />
-                ))}
+                {display}
             </tbody>
         </BSTable>
     )
