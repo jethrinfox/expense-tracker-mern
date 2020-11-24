@@ -8,11 +8,12 @@ import Table from './components/Table';
 import Total from './components/Total';
 import Graph from './components/Graph';
 import Footer from './components/Footer';
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container/';
+import { GlobalProvider } from './context/GlobalState';
 
 const App = () => {
   return (
-    <>
+    <GlobalProvider>
       <Header />
       <Container>
         <AddTransaction />
@@ -22,7 +23,7 @@ const App = () => {
         {/* <Graph />
         <Footer /> */}
       </Container>
-    </>
+    </GlobalProvider>
   )
 }
 

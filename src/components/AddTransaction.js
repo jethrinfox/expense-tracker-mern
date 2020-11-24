@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import React, { useContext, useState } from 'react'
+import { Button, Col, Form } from 'react-bootstrap'
+import { GlobalContext } from '../context/GlobalState'
 
 const AddTransaction = () => {
+
+    const { transactions, addTransaction } = useContext(GlobalContext)
 
     const [expense, setExpense] = useState('')
     const [amount, setAmount] = useState('')
@@ -9,6 +12,15 @@ const AddTransaction = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
+        const transaction = {
+            id: transactions.length + 1,
+            expense,
+            amount: +amount,
+            category
+        }
+        setExpense('')
+        setAmount('')
+        addTransaction(transaction)
     }
 
     return (
@@ -17,19 +29,19 @@ const AddTransaction = () => {
                 <Col sm md="4">
                     <Form.Group controlId="expenseName">
                         <Form.Label>Expense Name</Form.Label>
-                        <Form.Control type="text" onChange={(e) => setExpense(e.target.value)} />
+                        <Form.Control type="text" value={expense} onChange={(e) => setExpense(e.target.value)} />
                     </Form.Group>
                 </Col>
                 <Col sm md="4">
                     <Form.Group controlId="expenseAmount">
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control type="text" onChange={(e) => setAmount(e.target.value)} />
+                        <Form.Control type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
                     </Form.Group>
                 </Col>
                 <Col sm md="4">
-                    <Form.Group>
+                    <Form.Group controlId="expenseCategory">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control as="select" onChange={(e) => setCategory(e.target.value)}>
+                        <Form.Control as="select" custom onChange={(e) => setCategory(e.target.value)}>
                             <option selected disabled>Please Select</option>
                             <option>Groceries</option>
                             <option>Travel</option>

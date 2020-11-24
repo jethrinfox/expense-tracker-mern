@@ -1,9 +1,14 @@
-import React from 'react'
-import { Table as BSTable } from 'react-bootstrap'
+import React, { useContext } from 'react'
+import BSTable from 'react-bootstrap/Table/'
+import { GlobalContext } from '../context/GlobalState'
+import TableItem from './TableItem'
 
-import { data } from '../data'
+// import { data } from '../data'
 
 const Table = () => {
+
+    const { transactions } = useContext(GlobalContext)
+
     return (
         <BSTable striped bordered hover size="sm">
             <thead>
@@ -12,22 +17,13 @@ const Table = () => {
                     <th>Expense</th>
                     <th>Amount</th>
                     <th>Category</th>
+                    <th>X</th>
                 </tr>
             </thead>
             <tbody>
-                {
-                    data.map((item, idx) => {
-                        const { expense, amount, category } = item
-                        const price = amount < 0 ? `-$${Math.abs(amount)}` : `$${amount}`
-                        return <tr>
-                            <td>{idx + 1}</td>
-                            <td>{expense}</td>
-                            <td>{price}</td>
-                            <td>{category}</td>
-                        </tr>
-                    })
-                }
-
+                {transactions.map((item, idx) => (
+                    <TableItem key={idx} item={item} idx={idx} />
+                ))}
             </tbody>
         </BSTable>
     )
