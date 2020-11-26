@@ -17,7 +17,9 @@ db.once('open', () => console.log('Connected to DB'));
 app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(morgan('dev'))
+if (config.environment === 'dev') {
+    app.use(morgan('dev'))
+}
 
 // Express main routes
 app.use('/api/v1', routes)

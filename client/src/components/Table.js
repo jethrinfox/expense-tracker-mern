@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import BSTable from 'react-bootstrap/Table/'
 import { GlobalContext } from '../context/GlobalState'
 import TableItem from './TableItem'
@@ -7,11 +7,16 @@ import TableItem from './TableItem'
 
 const Table = () => {
 
-    const { transactions } = useContext(GlobalContext)
+    const { transactions, fetchAllData } = useContext(GlobalContext)
+
+    useEffect(() => {
+        fetchAllData()
+        // eslint-disable-next-line
+    }, [])
 
     const display = transactions.length > 0
         ? (transactions.map((item, idx) => (
-            <TableItem key={idx} item={item} idx={idx} />
+            <TableItem key={item._id} item={item} idx={idx} />
         ))) : (
             <tr><td colSpan="6">No items added yet</td></tr>
         )

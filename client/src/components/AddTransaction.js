@@ -4,9 +4,9 @@ import { GlobalContext } from '../context/GlobalState'
 
 const AddTransaction = () => {
 
-    const { transactions, addTransaction } = useContext(GlobalContext)
+    const { addTransaction } = useContext(GlobalContext)
 
-    const [expense, setExpense] = useState('')
+    const [text, setText] = useState('')
     const [amount, setAmount] = useState('')
     const [category, setCategory] = useState('')
     const [startDate, setStartDate] = useState('');
@@ -15,13 +15,12 @@ const AddTransaction = () => {
     const handleSubmit = e => {
         e.preventDefault();
         const transaction = {
-            id: transactions.length + 1,
-            expense,
+            text,
             amount: +amount,
             category,
             date: new Date(startDate)
         }
-        setExpense('')
+        setText('')
         setAmount('')
         addTransaction(transaction)
     }
@@ -32,13 +31,13 @@ const AddTransaction = () => {
                 <Col >
                     <Form.Group controlId="expenseName">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control type="text" placeholder="Income or Expense" value={expense} onChange={(e) => setExpense(e.target.value)} />
+                        <Form.Control type="text" placeholder="" value={text} onChange={(e) => setText(e.target.value)} />
                     </Form.Group>
                 </Col>
                 <Col >
                     <Form.Group controlId="expenseAmount">
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control type="text" placeholder="Use - for expense" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                        <Form.Control type="text" placeholder="" value={amount} onChange={(e) => setAmount(e.target.value)} />
                     </Form.Group>
                 </Col>
             </Form.Row>
@@ -47,8 +46,8 @@ const AddTransaction = () => {
                 <Col >
                     <Form.Group controlId="expenseCategory">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control as="select" custom onChange={(e) => setCategory(e.target.value)}>
-                            <option selected disabled>Please Select</option>
+                        <Form.Control as="select" defaultValue="0" custom onChange={(e) => setCategory(e.target.value)}>
+                            <option value="0" disabled>Please Select</option>
                             <option>Groceries</option>
                             <option>Travel</option>
                             <option>Clothing</option>

@@ -2,23 +2,22 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const transactionSchema = new Schema({
-  name: {
+  text: {
     type: String,
-    required: true,
     trim: true,
+    required: [true, 'Please add a description'],
   },
   amount: {
     type: Number,
-    required: true,
+    required: [true, 'Please add a positive or negative number']
   },
   category: {
     type: String,
-    required: true,
     trim: true,
     default: 'various'
   },
-  createdBy: {
-    type: String,
+  date: {
+    type: Date,
   },
   createdAt: {
     type: Date,

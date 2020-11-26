@@ -5,8 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
-		"dev": "nodemon index.js",
-		"both": "concurrently \"yarn dev\" \"yarn --cwd client/ run start\""
+		"server": "nodemon index.js -i /client/**",
+		"react": "yarn --cwd client/ run start",
+		"dev": "concurrently \"yarn server\" \"yarn react\""
 	},
 	"engines": {
 		"node": ">=6"
