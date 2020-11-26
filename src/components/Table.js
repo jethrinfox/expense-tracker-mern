@@ -13,17 +13,18 @@ const Table = () => {
         ? (transactions.map((item, idx) => (
             <TableItem key={idx} item={item} idx={idx} />
         ))) : (
-            <tr><td colspan="5">No items added yet</td></tr>
+            <tr><td colSpan="6">No items added yet</td></tr>
         )
 
     return (
-        <BSTable striped bordered hover size="sm">
+        <BSTable striped bordered hover size="sm" id="table">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Expense</th>
+                    <th>Description</th>
                     <th>Amount</th>
                     <th>Category</th>
+                    <th>Date</th>
                     <th>X</th>
                 </tr>
             </thead>

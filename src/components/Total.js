@@ -14,7 +14,7 @@ const Total = () => {
     const variant = total < 0 ? 'danger' : 'success'
 
     return (
-        <div>
+        <div className="total">
             <h3>
                 <Badge variant={variant}>Total: {withCommas(formated)}</Badge>
             </h3>
