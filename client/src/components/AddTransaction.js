@@ -17,6 +17,7 @@ const AddTransaction = () => {
         addTransaction(transaction);
     }
 
+
     return (
         <Form className="addForm" onSubmit={handleSubmit(onSubmit)}>
             <Form.Row>

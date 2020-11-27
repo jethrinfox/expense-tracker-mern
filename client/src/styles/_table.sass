@@ -1,0 +1,29 @@
+#table
+    margin: 0
+    thead
+        tr
+            th
+                font-size: 1.2rem
+                font-weight: 500
+                font-family: "Open Sans", sans-serif
+                &:first-child
+                    text-align: center
+                &:last-child
+                    text-align: center
+    tbody
+        .table-row
+            td
+                .delete-icon
+                    transition: color 0.2s ease
+                    &:hover
+                        cursor: pointer
+                        color: red
+                &:first-child
+                    text-align: center
+                &:last-child
+                    text-align: center
+            .expense
+                background-color: #F44336
+            .income
+                background-color: #B2FF59
+        
