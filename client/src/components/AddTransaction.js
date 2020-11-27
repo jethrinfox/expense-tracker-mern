@@ -1,43 +1,35 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
+import { useForm } from "react-hook-form";
 import { GlobalContext } from '../context/GlobalState'
 
 const AddTransaction = () => {
 
     const { addTransaction } = useContext(GlobalContext)
+    const { register, handleSubmit } = useForm();
 
-    const [text, setText] = useState('')
-    const [amount, setAmount] = useState('')
-    const [category, setCategory] = useState('')
-    const [startDate, setStartDate] = useState('');
-
-
-    const handleSubmit = e => {
-        e.preventDefault();
+    const onSubmit = data => {
         const transaction = {
-            text,
-            amount: +amount,
-            category,
-            date: new Date(startDate)
+            ...data,
+            amount: +data.amount,
+            date: new Date(data.date)
         }
-        setText('')
-        setAmount('')
-        addTransaction(transaction)
+        addTransaction(transaction);
     }
 
     return (
-        <Form className="addForm" onSubmit={handleSubmit}>
+        <Form className="addForm" onSubmit={handleSubmit(onSubmit)}>
             <Form.Row>
                 <Col >
                     <Form.Group controlId="expenseName">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control type="text" placeholder="" value={text} onChange={(e) => setText(e.target.value)} />
+                        <Form.Control name="text" type="text" ref={register({ required: true })} />
                     </Form.Group>
                 </Col>
                 <Col >
                     <Form.Group controlId="expenseAmount">
                         <Form.Label>Amount</Form.Label>
-                        <Form.Control type="text" placeholder="" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                        <Form.Control name="amount" type="number" ref={register({ required: true })} />
                     </Form.Group>
                 </Col>
             </Form.Row>
@@ -46,7 +38,7 @@ const AddTransaction = () => {
                 <Col >
                     <Form.Group controlId="expenseCategory">
                         <Form.Label>Category</Form.Label>
-                        <Form.Control as="select" defaultValue="0" custom onChange={(e) => setCategory(e.target.value)}>
+                        <Form.Control name="category" as="select" defaultValue="0" custom ref={register({ required: true })} >
                             <option value="0" disabled>Please Select</option>
                             <option>Groceries</option>
                             <option>Travel</option>
@@ -60,13 +52,11 @@ const AddTransaction = () => {
                 <Col >
                     <Form.Group>
                         <Form.Label>Select Date</Form.Label>
-                        <Form.Control type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                        <Form.Control name="date" type="date" ref={register({ required: true })} />
                     </Form.Group>
                 </Col>
             </Form.Row>
-            <Button variant="primary" block size="lg" type="submit">
-                Add
-            </Button>
+            <Button variant="primary" block size="lg" type="submit">Add</Button>
         </Form>
     )
 }
