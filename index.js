@@ -1,31 +1,61 @@
+// Index.js
+
+/*
+* Imports
+*/
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const helmet = require('helmet')
 const morgan = require('morgan')
-const config = require('./config')
-const routes = require('./routes')
+const session = require('express-session');
+const passport = require('passport');
+const MongoStore = require('connect-mongo')(session);
 
+/*
+*   Config
+*/
 const app = express()
+require('./lib/db')
+require('./lib/passport')
 
-// MongoDB config
-mongoose.connect(config.mongo.url, config.mongo.config)
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => console.log('Connected to DB'));
 
-// Express middlewares config
+/*
+*   Config
+*/
+const PORT = process.env.PORT || 8080
+const ENV = process.env.NODE_ENV || 'dev'
+
+
+/*
+*   Middlewares
+*/
 app.use(helmet())
+app.use(session({
+    secret: 'verysecret',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-if (config.environment === 'dev') {
+app.use(passport.initialize())
+app.use(passport.session())
+if (ENV === 'dev') {
     app.use(morgan('dev'))
 }
 
-// Express main routes
-app.use('/api/v1', routes)
+
+/*
+*   Main Routes
+*/
+app.use('/api/v1', require('./routes'))
 
 
-// Express server initialization
-app.listen(config.server.port, () => console.log(`Server running in ${config.environment} mode on port ${config.server.port}`))
+/*
+*   Express Server initialization
+*/
+app.listen(PORT, () => console.log(`Server running in ${ENV} mode on port ${PORT}`))
+
 
 module.exports = app

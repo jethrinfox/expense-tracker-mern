@@ -7,6 +7,8 @@ const Header = () => {
 
     const { user } = useContext(GlobalContext)
 
+    console.log(user);
+
     return (
         <Navbar id="navbar" expand="lg" bg="light" >
             <Container className="container">
