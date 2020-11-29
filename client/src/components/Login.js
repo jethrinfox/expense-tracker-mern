@@ -1,20 +1,32 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { GlobalContext } from '../context/GlobalState'
+import { useForm } from "react-hook-form";
 import { Button, Form } from 'react-bootstrap'
 
 const Login = () => {
+
+    const { login } = useContext(GlobalContext)
+    const { register, handleSubmit } = useForm();
+    const onSubmit = data => {
+        const user = {
+            ...data
+        }
+        login(user);
+    }
+
     return (
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
 
             <h3>Log in</h3>
 
             <Form.Group className="form-group">
                 <Form.Label>Email</Form.Label>
-                <Form.Control autoFocus type="email" placeholder="Enter email" />
+                <Form.Control name="username" required autoFocus type="email" placeholder="Enter email" ref={register({ required: true })} />
             </Form.Group>
 
             <Form.Group className="form-group">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Enter password" />
+                <Form.Control name="password" required type="password" placeholder="Enter password" ref={register({ required: true })} />
             </Form.Group>
 
             <Form.Group className="form-group">
@@ -25,7 +37,7 @@ const Login = () => {
                 />
             </Form.Group>
 
-            <Button type="submit" className="btn btn-dark btn-lg btn-block">Sign in</Button>
+            <Button type="submit" block variant="dark" size="lg" >Sign in</Button>
             <p className="forgot-password text-right">
                 Forgot <a href="#/">password?</a>
             </p>

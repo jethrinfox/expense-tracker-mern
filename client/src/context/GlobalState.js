@@ -69,6 +69,49 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+
+    async function signUp(user) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        try {
+            const res = await axios.post(`/api/v1/user/`, user, config)
+            dispatch({
+                type: 'ADD_USER',
+                payload: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: 'TRANSACTION_ERROR',
+                payload: error.response.data.error
+            });
+        }
+    }
+
+
+    async function login(user) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        try {
+            const res = await axios.get(`/api/v1/user/`, user, config)
+            dispatch({
+                type: 'ADD_USER',
+                payload: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: 'TRANSACTION_ERROR',
+                payload: error.response.data.error
+            });
+        }
+    }
+
+
     return (<GlobalContext.Provider value={{
         transactions: state.transactions,
         error: state.error,
@@ -76,6 +119,8 @@ export const GlobalProvider = ({ children }) => {
         user: state.user,
         deleteTransaction,
         addTransaction,
+        signUp,
+        login,
         fetchAllData
     }}>
         {children}
