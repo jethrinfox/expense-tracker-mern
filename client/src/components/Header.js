@@ -5,7 +5,7 @@ import { GlobalContext } from '../context/GlobalState'
 
 const Header = () => {
 
-    const { user } = useContext(GlobalContext)
+    const { isLoggedIn, logOut } = useContext(GlobalContext)
 
     return (
         <Navbar id="navbar" expand="lg" bg="light" >
@@ -14,9 +14,10 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/">Home</Nav.Link>
-                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                        <Nav.Link as={Link} to="/signup">Sign-up</Nav.Link>
+                        {isLoggedIn && <Nav.Link as={Link} to="/">Home</Nav.Link>}
+                        {isLoggedIn && <Nav.Link onClick={() => logOut()}>LogOut</Nav.Link>}
+                        {!isLoggedIn && <Nav.Link as={Link} to="/login">Login</Nav.Link>}
+                        {!isLoggedIn && <Nav.Link as={Link} to="/signup">Sign-up</Nav.Link>}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

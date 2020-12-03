@@ -9,6 +9,6 @@ router.route('/').get((req, res) => {
 })
 
 router.use('/transaction', transaction)
-// router.use('/user', user)
+router.use('/user', user)
 
 module.exports = router

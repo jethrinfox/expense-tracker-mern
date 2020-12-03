@@ -1,15 +1,17 @@
 // Index.js
 
 /*
-* Imports
+*   Imports
 */
 require('dotenv').config()
 const express = require('express')
-const mongoose = require('mongoose')
-const helmet = require('helmet')
+const helmet = require('helmet');
+const hpp = require('hpp');
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 const session = require('express-session');
 const passport = require('passport');
+const rateLimit = require("express-rate-limit");
 const MongoStore = require('connect-mongo')(session);
 
 /*
@@ -18,13 +20,9 @@ const MongoStore = require('connect-mongo')(session);
 const app = express()
 require('./lib/db')
 require('./lib/passport')
-
-
-/*
-*   Config
-*/
 const PORT = process.env.PORT || 8080
 const ENV = process.env.NODE_ENV || 'dev'
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 })
 
 
 /*
@@ -39,6 +37,8 @@ app.use(session({
 }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(hpp())
+app.use(limiter)
 app.use(passport.initialize())
 app.use(passport.session())
 if (ENV === 'dev') {

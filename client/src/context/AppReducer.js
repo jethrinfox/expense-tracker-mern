@@ -17,12 +17,19 @@ export default (state, action) => {
                 ...state,
                 transactions: [...state.transactions, action.payload]
             }
-        case 'ADD_USER':
+        case 'USER_REGISTER':
             return {
                 ...state,
+                isLoggedIn: true,
                 user: action.payload
             }
-        case 'TRANSACTION_ERROR':
+        case 'USER_LOGOUT':
+            return {
+                ...state,
+                isLoggedIn: false,
+                user: action.payload
+            }
+        case 'ERROR':
             return {
                 ...state,
                 error: action.payload

@@ -7,7 +7,9 @@ const initialState = {
     transactions: [],
     error: null,
     loading: true,
-    user: {}
+    user: {},
+    isLoggedIn: false,
+    token: null,
 }
 
 // Create context
@@ -27,7 +29,7 @@ export const GlobalProvider = ({ children }) => {
             });
         } catch (error) {
             dispatch({
-                type: 'TRANSACTION_ERROR',
+                type: 'ERROR',
                 payload: error.response.data.error
             });
         }
@@ -42,7 +44,7 @@ export const GlobalProvider = ({ children }) => {
             });
         } catch (error) {
             dispatch({
-                type: 'TRANSACTION_ERROR',
+                type: 'ERROR',
                 payload: error.response.data.error
             });
         }
@@ -63,7 +65,7 @@ export const GlobalProvider = ({ children }) => {
             });
         } catch (error) {
             dispatch({
-                type: 'TRANSACTION_ERROR',
+                type: 'ERROR',
                 payload: error.response.data.error
             });
         }
@@ -71,6 +73,7 @@ export const GlobalProvider = ({ children }) => {
 
 
     async function signUp(user) {
+        console.log("pre POST: ", user)
         const config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -78,20 +81,22 @@ export const GlobalProvider = ({ children }) => {
         }
         try {
             const res = await axios.post(`/api/v1/user/`, user, config)
+            console.log("response: ", res)
             dispatch({
-                type: 'ADD_USER',
-                payload: res.data
+                type: 'USER_REGISTER',
+                payload: res.data.user
             });
         } catch (error) {
             dispatch({
-                type: 'TRANSACTION_ERROR',
-                payload: error.response.data.error
+                type: 'ERROR',
+                payload: "Error"
             });
         }
     }
 
 
     async function login(user) {
+        console.log(user);
         const config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -100,14 +105,26 @@ export const GlobalProvider = ({ children }) => {
         try {
             const res = await axios.get(`/api/v1/user/`, user, config)
             dispatch({
-                type: 'ADD_USER',
-                payload: res.data
+                type: 'USER_REGISTER',
+                payload: res.data.user
             });
         } catch (error) {
             dispatch({
-                type: 'TRANSACTION_ERROR',
-                payload: error.response.data.error
+                type: 'ERROR',
+                payload: "Error"
             });
+        }
+    }
+
+    async function logOut() {
+        try {
+            await axios.get(`/api/v1/user/logout`,)
+            dispatch({
+                type: 'USER_LOGOUT',
+                payload: {}
+            });
+        } catch (error) {
+            console.log("Error on logout");
         }
     }
 
@@ -116,11 +133,14 @@ export const GlobalProvider = ({ children }) => {
         transactions: state.transactions,
         error: state.error,
         loading: state.loading,
+        isLoggedIn: state.isLoggedIn,
+        token: state.token,
         user: state.user,
         deleteTransaction,
         addTransaction,
         signUp,
         login,
+        logOut,
         fetchAllData
     }}>
         {children}

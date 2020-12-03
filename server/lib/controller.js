@@ -5,51 +5,20 @@ class Controller {
 
   create(req, res, next) {
     this.facade.create(req.body)
-      .then(doc => res.status(201).json({
-        success: true,
-        data: doc
-      }))
-      .catch(err => {
-        console.error(err);
-        if (err._message === 'Transaction validation failed') {
-          const messages = Object.values(err.errors).map(val => val.message)
-          return res.status(400).json({
-            success: false,
-            error: messages
-          })
-        } else {
-          return res.status(500).json({
-            success: false,
-            error: 'Server error'
-          })
-        }
-      })
+      .then(doc => res.status(201).json(doc))
+      .catch(err => next(err))
   }
 
   find(req, res, next) {
     return this.facade.find(req.query)
-      .then(collection => res.status(200).json({
-        success: true,
-        count: collection.length,
-        data: collection
-      }))
-      .catch(err => {
-        return res.status(500).json({
-          success: false,
-          error: 'Server error'
-        })
-      })
+      .then(collection => res.status(200).json(collection))
+      .catch(err => next(err))
   }
 
   findOne(req, res, next) {
     return this.facade.findOne(req.query)
       .then(doc => res.status(200).json(doc))
-      .catch(err => {
-        return res.status(500).json({
-          success: false,
-          error: 'Server error'
-        })
-      })
+      .catch(err => next(err))
   }
 
   findById(req, res, next) {
@@ -58,27 +27,17 @@ class Controller {
         if (!doc) { return res.sendStatus(404) }
         return res.status(200).json(doc)
       })
-      .catch(err => {
-        return res.status(500).json({
-          success: false,
-          error: 'Server error'
-        })
-      })
+      .catch(err => next(err))
   }
 
   update(req, res, next) {
-    this.facade.updateOne({ _id: req.params.id }, req.body)
+    this.facade.update({ _id: req.params.id }, req.body)
       .then((results) => {
         if (results.n < 1) { return res.sendStatus(404) }
         if (results.nModified < 1) { return res.sendStatus(304) }
         res.sendStatus(204)
       })
-      .catch(err => {
-        return res.status(500).json({
-          success: false,
-          error: 'Server error'
-        })
-      })
+      .catch(err => next(err))
   }
 
   remove(req, res, next) {
@@ -87,12 +46,7 @@ class Controller {
         if (!doc) { return res.sendStatus(404) }
         return res.sendStatus(204)
       })
-      .catch(err => {
-        return res.status(500).json({
-          success: false,
-          error: 'Server error'
-        })
-      })
+      .catch(err => next(err))
   }
 }
 
