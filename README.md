@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# lol Expense Tracker with Auth
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### Includes server node server for api functions
 
-## Available Scripts
+## Table of contents
 
-In the project directory, you can run:
+-   [Introduction](#Introduction)
+-   [Technologies](#Technologies)
+-   [Setup](#Setup)
+-   [Functionality](#Functionality)
 
-### `yarn start`
+### Introduction
+
+This is a React expense tracker app with an included NodeJS server API. You can keep track of your expenses and earnings in a simple way with secure authentication. You can create an account and then input the data in a simple form. React useContext hook keeps track of the user data like "user-id" to send requests to the server and retrieve all the "transactions" saved under that user id.
+
+## Technologies
+
+-   ReactJS
+-   Axios
+-   NodeJS
+-   Express
+-   MongoDB (mongoose)
+-   Passport (local auth strategy)
+
+## Setup
+
+First I'm gonna assume that you have some instance of MongoDB running.
+If that's not the case you can create one for free in [Atlas](https://www.mongodb.com/cloud/atlas).
+
+#### Clone the repo
+
+```
+git clone https://github.com/jethrinfox/expense-tracker-mern
+
+cd expense-tracker-mern
+```
+
+#### Install dependencies on Backend
+
+```
+cd server/
+
+yarn
+```
+
+#### Then navigate back to the root directory and do the same
+
+```
+cd ..
+
+yarn
+```
+
+#### You can run it in dev mode to enable nodemon in the server folder
+
+```
+yarn dev
+```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+React automatically proxies request to the configured server port
+If you change the server port you can modify this in the `package.json` of the root directory
 
-### `yarn test`
+## Functionality
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Not a very complex project but is expandable for added functionality, it implements PassportJS local strategy but obviously, other strategies can be added like `auth0`.
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   Signup using a name, email, and password
+-   Log in using your email and password
+-   Create, Read, Update, and Delete using the ReactJS frontend
+-   Store a "transaction" description, amount, category, and date
