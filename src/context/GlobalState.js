@@ -7,7 +7,7 @@ const initialState = {
     transactions: [],
     error: null,
     loading: true,
-    user: {},
+    user: null,
     isLoggedIn: false,
     token: null,
 }
@@ -73,14 +73,13 @@ export const GlobalProvider = ({ children }) => {
 
 
     async function signUp(user) {
-        console.log("pre POST: ", user)
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
         try {
-            const res = await axios.post(`/api/v1/user/`, user, config)
+            const res = await axios.post(`/api/v1/user/signup`, user, config)
             console.log("response: ", res)
             dispatch({
                 type: 'USER_REGISTER',
@@ -96,14 +95,13 @@ export const GlobalProvider = ({ children }) => {
 
 
     async function login(user) {
-        console.log(user);
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
         try {
-            const res = await axios.get(`/api/v1/user/`, user, config)
+            const res = await axios.post(`/api/v1/user/login`, user, config)
             dispatch({
                 type: 'USER_REGISTER',
                 payload: res.data.user
@@ -121,10 +119,13 @@ export const GlobalProvider = ({ children }) => {
             await axios.get(`/api/v1/user/logout`,)
             dispatch({
                 type: 'USER_LOGOUT',
-                payload: {}
+                payload: null
             });
         } catch (error) {
-            console.log("Error on logout");
+            dispatch({
+                type: 'USER_LOGOUT',
+                payload: null
+            });
         }
     }
 

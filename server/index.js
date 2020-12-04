@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 const session = require('express-session');
 const passport = require('passport');
 const rateLimit = require("express-rate-limit");
-const MongoStore = require('connect-mongo')(session);
+const MongoDBStore = require('connect-mongodb-session')(session)
 
 /*
 *   Config
@@ -23,17 +23,23 @@ require('./lib/passport')
 const PORT = process.env.PORT || 8080
 const ENV = process.env.NODE_ENV || 'dev'
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 })
-
+const store = new MongoDBStore({
+    uri: process.env.MONGO_DB_URI,
+    collection: 'sessionsStore'
+})
 
 /*
 *   Middlewares
 */
 app.use(helmet())
 app.use(session({
-    secret: 'verysecret',
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
+    secret: "superSecretToken",
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    resave: true,
+    saveUninitialized: true,
+    store: store
 }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

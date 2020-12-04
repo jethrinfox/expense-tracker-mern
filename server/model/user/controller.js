@@ -7,7 +7,6 @@ class UserController extends Controller {
     signup(req, res, next) {
         passport.authenticate('local.signup', (err, user, info) => {
             if (err) { return next(err); }
-
             req.logIn(user, (err) => {
                 if (err) { return next(err); }
                 return res.status(201).json({
@@ -15,14 +14,12 @@ class UserController extends Controller {
                     user
                 })
             });
-
         })(req, res, next);
     }
 
     login(req, res, next) {
         passport.authenticate('local.login', (err, user, info) => {
             if (err) { return next(err); }
-
             req.logIn(user, (err) => {
                 if (err) { return next(err); }
                 return res.status(201).json({
@@ -30,7 +27,6 @@ class UserController extends Controller {
                     user
                 })
             });
-
         })(req, res, next);
     }
 
