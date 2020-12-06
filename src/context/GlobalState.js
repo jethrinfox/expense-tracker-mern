@@ -18,8 +18,8 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
     const history = useHistory()
-    const baseUrl = process.env.REACT_APP_NOT_SECRET_CODE === "production" ? (
-        "https://evening-escarpment-92494.herokuapp.com/"
+    const baseUrl = process.env.NODE_ENV === "production" ? (
+        "https://evening-escarpment-92494.herokuapp.com"
     ) : "http://localhost:8080"
 
     // Actions
