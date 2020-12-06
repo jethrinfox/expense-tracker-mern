@@ -22,10 +22,10 @@ const app = express()
 require('./lib/db')
 require('./lib/passport')
 const PORT = process.env.PORT || 8080
-const ENV = process.env.NODE_ENV || 'dev'
+const ENV = process.env.NODE_ENV || 'development'
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 })
 const store = new MongoDBStore({
-    uri: process.env.MONGO_DB_URI,
+    uri: process.env.MONGO_URI,
     collection: 'sessionsStore'
 })
 
@@ -49,7 +49,7 @@ app.use(hpp())
 app.use(limiter)
 app.use(passport.initialize())
 app.use(passport.session())
-if (ENV === 'dev') {
+if (ENV === 'devdevelopment') {
     app.use(morgan('dev'))
 }
 
