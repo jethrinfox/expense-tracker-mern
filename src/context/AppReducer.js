@@ -4,7 +4,6 @@ export default (state, action) => {
         case 'FETCH_ALL_TRANSACTION':
             return {
                 ...state,
-                loading: false,
                 transactions: action.payload
             }
         case 'DELETE_TRANSACTION':

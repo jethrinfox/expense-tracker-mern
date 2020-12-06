@@ -5,15 +5,17 @@ import { GlobalContext } from '../context/GlobalState'
 
 const AddTransaction = () => {
 
-    const { addTransaction } = useContext(GlobalContext)
+    const { addTransaction, user } = useContext(GlobalContext)
     const { register, handleSubmit } = useForm();
 
     const onSubmit = data => {
         const transaction = {
             ...data,
             amount: +data.amount,
+            user_id: user._id,
             date: new Date(data.date)
         }
+        console.log(transaction);
         addTransaction(transaction);
     }
 

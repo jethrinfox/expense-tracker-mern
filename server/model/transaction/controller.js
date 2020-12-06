@@ -26,6 +26,7 @@ class TransactionController extends Controller {
     }
 
     find(req, res, next) {
+        console.log(req.query);
         return this.facade.find(req.query)
             .then(collection => res.status(200).json({
                 success: true,

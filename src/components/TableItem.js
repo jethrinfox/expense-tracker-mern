@@ -7,7 +7,7 @@ const TableItem = ({ item, idx }) => {
 
     const { deleteTransaction } = useContext(GlobalContext)
 
-    const { _id, text, amount, category } = item
+    const { _id, text, amount, category, date } = item
     const price = amount < 0 ? `-$${Math.abs(amount)}` : `$${amount}`
     const color = amount < 0 ? 'expense' : 'income'
 
@@ -17,7 +17,7 @@ const TableItem = ({ item, idx }) => {
             <td>{text}</td>
             <td>{withCommas(price)}</td>
             <td>{category}</td>
-            <td>{category}</td>
+            <td>{date}</td>
             <td><AiOutlineDelete className="delete-icon" onClick={() => deleteTransaction(_id)} /></td>
         </tr>
     )

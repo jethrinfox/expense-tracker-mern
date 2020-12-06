@@ -1,41 +1,44 @@
-import React, { useContext } from 'react'
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import React from 'react'
+import { HashRouter, Switch } from "react-router-dom";
 import Container from 'react-bootstrap/Container/';
-import { GlobalContext, GlobalProvider } from './context/GlobalState';
+import { GlobalProvider } from './context/GlobalState';
 import './styles/styles.sass';
 
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Main from './components/Main';
 import Header from './components/Header';
+import AuthRoute from './components/AuthRoute';
 
 
 const App = () => {
 
-  const { isLoggedIn } = useContext(GlobalContext)
-
   return (
     <GlobalProvider>
-      <Router>
+      <HashRouter basename="/expense-tracker-mern">
         <Header />
         <Container className="flex-container" >
           <Switch>
-            <Route path="/login" exact>
-              {isLoggedIn && <Redirect to="/" />}
+
+            <AuthRoute path="/login" type="guest" >
               <Login />
-            </Route>
-            <Route path="/signup" exact>
-              {isLoggedIn && <Redirect to="/" />}
+            </AuthRoute>
+
+            <AuthRoute path="/signup" type="guest">
               <Signup />
-            </Route>
-            {!isLoggedIn && <Redirect to="/login" />}
-            <Route path="/" exact>
+            </AuthRoute>
+
+            <AuthRoute path="/" exact type="private">
               <Main />
-            </Route>
-            <Route path="*" >404</Route>
+            </AuthRoute>
+
+            <AuthRoute path="*" >
+              404
+            </AuthRoute>
+
           </Switch>
         </Container>
-      </Router>
+      </HashRouter>
     </GlobalProvider>
   )
 }

@@ -1,15 +1,14 @@
 import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
 import axios from 'axios'
+import { useHistory } from 'react-router-dom';
 
 // Initial state
 const initialState = {
     transactions: [],
     error: null,
-    loading: true,
     user: null,
     isLoggedIn: false,
-    token: null,
 }
 
 // Create context
@@ -18,20 +17,24 @@ export const GlobalContext = createContext(initialState);
 // Provider component
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
+    const history = useHistory()
 
     // Actions
     async function fetchAllData() {
-        try {
-            const res = await axios.get("/api/v1/transaction")
-            dispatch({
-                type: 'FETCH_ALL_TRANSACTION',
-                payload: res.data.data
-            });
-        } catch (error) {
-            dispatch({
-                type: 'ERROR',
-                payload: error.response.data.error
-            });
+        if (state.user) {
+            const url = `/api/v1/transaction?user_id=${state.user._id}`
+            try {
+                const res = await axios.get(url)
+                dispatch({
+                    type: 'FETCH_ALL_TRANSACTION',
+                    payload: res.data.data
+                });
+            } catch (error) {
+                dispatch({
+                    type: 'ERROR',
+                    payload: error.response.data.error
+                });
+            }
         }
     }
 
@@ -106,6 +109,7 @@ export const GlobalProvider = ({ children }) => {
                 type: 'USER_REGISTER',
                 payload: res.data.user
             });
+            history.push('/')
         } catch (error) {
             dispatch({
                 type: 'ERROR',
@@ -133,10 +137,8 @@ export const GlobalProvider = ({ children }) => {
     return (<GlobalContext.Provider value={{
         transactions: state.transactions,
         error: state.error,
-        loading: state.loading,
-        isLoggedIn: state.isLoggedIn,
-        token: state.token,
         user: state.user,
+        isLoggedIn: state.isLoggedIn,
         deleteTransaction,
         addTransaction,
         signUp,
