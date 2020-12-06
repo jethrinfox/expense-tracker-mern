@@ -18,11 +18,14 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
     const history = useHistory()
+    const baseUrl = process.env.REACT_APP_NOT_SECRET_CODE === "production" ? (
+        "https://evening-escarpment-92494.herokuapp.com/"
+    ) : "http://localhost:8080"
 
     // Actions
     async function fetchAllData() {
         if (state.user) {
-            const url = `/api/v1/transaction?user_id=${state.user._id}`
+            const url = `${baseUrl}/api/v1/transaction?user_id=${state.user._id}`
             try {
                 const res = await axios.get(url)
                 dispatch({
@@ -40,7 +43,7 @@ export const GlobalProvider = ({ children }) => {
 
     async function deleteTransaction(id) {
         try {
-            await axios.delete(`/api/v1/transaction/${id}`)
+            await axios.delete(`${baseUrl}/api/v1/transaction/${id}`)
             dispatch({
                 type: 'DELETE_TRANSACTION',
                 payload: id
@@ -61,7 +64,7 @@ export const GlobalProvider = ({ children }) => {
         }
 
         try {
-            const res = await axios.post(`/api/v1/transaction/`, transaction, config)
+            const res = await axios.post(`${baseUrl}/api/v1/transaction/`, transaction, config)
             dispatch({
                 type: 'ADD_TRANSACTION',
                 payload: res.data.data
@@ -82,7 +85,7 @@ export const GlobalProvider = ({ children }) => {
             }
         }
         try {
-            const res = await axios.post(`/api/v1/user/signup`, user, config)
+            const res = await axios.post(`${baseUrl}/api/v1/user/signup`, user, config)
             console.log("response: ", res)
             dispatch({
                 type: 'USER_REGISTER',
@@ -104,7 +107,7 @@ export const GlobalProvider = ({ children }) => {
             }
         }
         try {
-            const res = await axios.post(`/api/v1/user/login`, user, config)
+            const res = await axios.post(`${baseUrl}/api/v1/user/login`, user, config)
             dispatch({
                 type: 'USER_REGISTER',
                 payload: res.data.user
@@ -120,7 +123,7 @@ export const GlobalProvider = ({ children }) => {
 
     async function logOut() {
         try {
-            await axios.get(`/api/v1/user/logout`,)
+            await axios.get(`${baseUrl}/api/v1/user/logout`,)
             dispatch({
                 type: 'USER_LOGOUT',
                 payload: null

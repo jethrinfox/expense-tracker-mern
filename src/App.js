@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <GlobalProvider>
-      <HashRouter basename="/expense-tracker-mern">
+      <HashRouter basename="/">
         <Header />
         <Container className="flex-container" >
           <Switch>

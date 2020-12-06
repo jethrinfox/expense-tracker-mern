@@ -6,6 +6,7 @@
 require('dotenv').config()
 const express = require('express')
 const helmet = require('helmet');
+const cors = require('cors');
 const hpp = require('hpp');
 const morgan = require('morgan')
 const mongoose = require('mongoose')
@@ -31,6 +32,7 @@ const store = new MongoDBStore({
 /*
 *   Middlewares
 */
+app.use(cors())
 app.use(helmet())
 app.use(session({
     secret: "superSecretToken",
