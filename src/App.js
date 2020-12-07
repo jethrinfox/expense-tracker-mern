@@ -12,11 +12,10 @@ import AuthRoute from './components/AuthRoute';
 
 const App = () => {
 
-  const { getUser } = useContext(GlobalContext)
+  const { getUser, isLoggedIn } = useContext(GlobalContext)
 
   useEffect(() => {
-    getUser()
-
+    if (!isLoggedIn) getUser()
     // eslint-disable-next-line
   }, [])
 
@@ -41,7 +40,7 @@ const App = () => {
 
           <AuthRoute path="*" >
             404
-            </AuthRoute>
+          </AuthRoute>
 
         </Switch>
       </Container>

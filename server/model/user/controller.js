@@ -49,7 +49,19 @@ class UserController extends Controller {
     }
 
     getUser(req, res, next) {
-        res.send(req.user)
+        if (req.user) {
+            return res.status(200).json({
+                success: true,
+                user: req.user
+            })
+        } else {
+            return res.status(404).json({
+                success: false,
+                error: "No user session"
+            })
+        }
+
+
     }
 
 }

@@ -137,7 +137,7 @@ export const GlobalProvider = ({ children }) => {
     async function getUser() {
         try {
             const res = await instance.get(`/api/v1/user/`)
-            if (res.user) {
+            if (res.data.success) {
                 dispatch({
                     type: 'USER_REGISTER',
                     payload: res.data.user
@@ -146,7 +146,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: 'ERROR',
-                payload: "Error"
+                payload: "No user session"
             });
         }
     }
