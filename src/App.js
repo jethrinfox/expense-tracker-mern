@@ -7,11 +7,12 @@ import Signup from './components/Signup';
 import Main from './components/Main';
 import Header from './components/Header';
 import AuthRoute from './components/AuthRoute';
+import Loading from './components/Loading';
 
 
 const App = () => {
 
-  const { getUser, isLoggedIn } = useContext(GlobalContext)
+  const { getUser, isLoggedIn, loading } = useContext(GlobalContext)
 
   useEffect(() => {
     if (!isLoggedIn) getUser()
@@ -21,6 +22,9 @@ const App = () => {
 
   return (
     <>
+
+      {loading && <Loading />}
+
       <Header />
       <div className="centered" >
         <Switch>
@@ -43,6 +47,7 @@ const App = () => {
 
         </Switch>
       </div>
+
     </>
   )
 }

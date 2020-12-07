@@ -4,7 +4,8 @@ export default (state, action) => {
         case 'FETCH_ALL_TRANSACTION':
             return {
                 ...state,
-                transactions: action.payload
+                transactions: action.payload,
+                loading: false,
             }
         case 'DELETE_TRANSACTION':
             return {
@@ -20,18 +21,25 @@ export default (state, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                user: action.payload
+                user: action.payload,
+                loading: false,
             }
         case 'USER_LOGOUT':
             return {
                 ...state,
                 isLoggedIn: false,
-                user: action.payload
+                user: action.payload,
             }
         case 'ERROR':
             return {
                 ...state,
-                error: action.payload
+                error: action.payload,
+                loading: false,
+            }
+        case 'LOADING':
+            return {
+                ...state,
+                loading: action.payload,
             }
         default:
             return state;

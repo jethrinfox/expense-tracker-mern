@@ -1,7 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
 import axios from 'axios'
-import { useHistory } from 'react-router-dom';
 
 // Initial state
 const initialState = {
@@ -9,6 +8,8 @@ const initialState = {
     error: null,
     user: null,
     isLoggedIn: false,
+    loading: false,
+
 }
 
 // Axios Instance
@@ -27,12 +28,15 @@ export const GlobalContext = createContext(initialState);
 // Provider component
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
-    const history = useHistory()
 
     // Actions
     async function fetchAllData() {
         if (state.user) {
             const url = `/api/v1/transaction?user_id=${state.user._id}`
+            dispatch({
+                type: 'LOADING',
+                payload: true
+            });
             try {
                 const res = await instance.get(url)
                 dispatch({
@@ -91,6 +95,10 @@ export const GlobalProvider = ({ children }) => {
                 'Content-Type': 'application/json'
             }
         }
+        dispatch({
+            type: 'LOADING',
+            payload: true
+        });
         try {
             const res = await instance.post(`/api/v1/user/`, user, config)
             dispatch({
@@ -119,13 +127,17 @@ export const GlobalProvider = ({ children }) => {
                 'Content-Type': 'application/json'
             }
         }
+        dispatch({
+            type: 'LOADING',
+            payload: true
+        });
         try {
             const res = await instance.post(`/api/v1/user/login`, user, config)
             dispatch({
                 type: 'USER_REGISTER',
                 payload: res.data.user
             });
-            history.push('/')
+
         } catch (error) {
             dispatch({
                 type: 'ERROR',
@@ -135,6 +147,10 @@ export const GlobalProvider = ({ children }) => {
     }
 
     async function getUser() {
+        dispatch({
+            type: 'LOADING',
+            payload: true
+        });
         try {
             const res = await instance.get(`/api/v1/user/`)
             if (res.data.success) {
@@ -172,6 +188,7 @@ export const GlobalProvider = ({ children }) => {
         error: state.error,
         user: state.user,
         isLoggedIn: state.isLoggedIn,
+        loading: state.loading,
         deleteTransaction,
         addTransaction,
         signUp,
