@@ -46,9 +46,9 @@ const sessionConfig = {
 */
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors({
-    origin: "http://localhost:3000", // <-- location of the react app were connecting to
-    credentials: true,
+app.use(cors({/* 
+    origin: "https://jethrinfox.github.io/", // <-- location of the react app were connecting to
+    credentials: true, */
 }))
 app.use(helmet())
 app.use(session(sessionConfig))
