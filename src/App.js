@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react'
 import { Switch } from "react-router-dom";
-import Container from 'react-bootstrap/Container/';
 import { GlobalContext } from './context/GlobalState';
 
 import Login from './components/Login';
@@ -23,7 +22,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <Container className="flex-container" >
+      <div className="centered" >
         <Switch>
 
           <AuthRoute path="/login" type="guest" >
@@ -43,7 +42,7 @@ const App = () => {
           </AuthRoute>
 
         </Switch>
-      </Container>
+      </div>
     </>
   )
 }
