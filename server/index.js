@@ -28,23 +28,30 @@ const store = new MongoDBStore({
     uri: process.env.MONGO_URI,
     collection: 'sessionsStore'
 })
+const sessionConfig = {
+    name: "expense-tracker",
+    secret: "superSecretToken",
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+    cookie: {
+        sameSite: true,
+        secure: ENV === 'production',
+        maxAge: 1000 * 60 * 60 * 2
+    }
+}
 
 /*
 *   Middlewares
 */
-app.use(cors())
-app.use(helmet())
-app.use(session({
-    secret: "superSecretToken",
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
-    },
-    resave: true,
-    saveUninitialized: true,
-    store: store
-}))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cors({
+    origin: "http://localhost:3000", // <-- location of the react app were connecting to
+    credentials: true,
+}))
+app.use(helmet())
+app.use(session(sessionConfig))
 app.use(hpp())
 app.use(limiter)
 app.use(passport.initialize())

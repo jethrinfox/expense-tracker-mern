@@ -5,24 +5,38 @@ const passport = require('passport');
 class UserController extends Controller {
 
     signup(req, res, next) {
-        passport.authenticate('local.signup', (err, user, info) => {
-            if (err) { return next(err); }
-            req.logIn(user, (err) => {
-                if (err) { return next(err); }
+        const { username, email, password } = req.body
+        this.facade.findOne({ email }, async (err, user) => {
+            if (err) throw err
+            if (user) {
+                console.log("User already exists");
+                return res.status(400).json({
+                    success: false,
+                    error: "User already exists"
+                })
+            }
+            else {
+                let newUser = {
+                    username,
+                    email,
+                    password,
+                }
+                newUser.password = await helpers.encryptPassword(password)
+                newUser = await this.facade.create(newUser)
                 return res.status(201).json({
                     success: true,
-                    user
+                    user: newUser,
                 })
-            });
-        })(req, res, next);
+            }
+        })
     }
 
     login(req, res, next) {
-        passport.authenticate('local.login', (err, user, info) => {
-            if (err) { return next(err); }
+        passport.authenticate('local', (err, user, info) => {
+            if (err) next(err)
             req.logIn(user, (err) => {
                 if (err) { return next(err); }
-                return res.status(201).json({
+                return res.status(200).json({
                     success: true,
                     user
                 })
@@ -32,7 +46,10 @@ class UserController extends Controller {
 
     logout(req, res, next) {
         req.logOut()
-        res.redirect('/login')
+    }
+
+    getUser(req, res, next) {
+        res.send(req.user)
     }
 
 }

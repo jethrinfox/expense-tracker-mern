@@ -7,6 +7,7 @@ const Header = () => {
 
     const { isLoggedIn, logOut } = useContext(GlobalContext)
 
+
     return (
         <Navbar id="navbar" expand="lg" bg="light" >
             <Container className="container">

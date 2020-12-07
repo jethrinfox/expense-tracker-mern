@@ -15,7 +15,6 @@ const AddTransaction = () => {
             user_id: user._id,
             date: new Date(data.date)
         }
-        console.log(transaction);
         addTransaction(transaction);
     }
 

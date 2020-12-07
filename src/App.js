@@ -1,8 +1,7 @@
-import React from 'react'
-import { HashRouter, Switch } from "react-router-dom";
+import React, { useContext, useEffect } from 'react'
+import { Switch } from "react-router-dom";
 import Container from 'react-bootstrap/Container/';
-import { GlobalProvider } from './context/GlobalState';
-import './styles/styles.sass';
+import { GlobalContext } from './context/GlobalState';
 
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -13,33 +12,40 @@ import AuthRoute from './components/AuthRoute';
 
 const App = () => {
 
+  const { getUser } = useContext(GlobalContext)
+
+  useEffect(() => {
+    getUser()
+
+    // eslint-disable-next-line
+  }, [])
+
+
   return (
-    <GlobalProvider>
-      <HashRouter basename="/">
-        <Header />
-        <Container className="flex-container" >
-          <Switch>
+    <>
+      <Header />
+      <Container className="flex-container" >
+        <Switch>
 
-            <AuthRoute path="/login" type="guest" >
-              <Login />
+          <AuthRoute path="/login" type="guest" >
+            <Login />
+          </AuthRoute>
+
+          <AuthRoute path="/signup" type="guest">
+            <Signup />
+          </AuthRoute>
+
+          <AuthRoute path="/" exact type="private">
+            <Main />
+          </AuthRoute>
+
+          <AuthRoute path="*" >
+            404
             </AuthRoute>
 
-            <AuthRoute path="/signup" type="guest">
-              <Signup />
-            </AuthRoute>
-
-            <AuthRoute path="/" exact type="private">
-              <Main />
-            </AuthRoute>
-
-            <AuthRoute path="*" >
-              404
-            </AuthRoute>
-
-          </Switch>
-        </Container>
-      </HashRouter>
-    </GlobalProvider>
+        </Switch>
+      </Container>
+    </>
   )
 }
 

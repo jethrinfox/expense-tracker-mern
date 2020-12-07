@@ -11,6 +11,16 @@ const initialState = {
     isLoggedIn: false,
 }
 
+// Axios Instance
+const baseUrl = process.env.NODE_ENV === "production" ? (
+    "https://evening-escarpment-92494.herokuapp.com"
+) : ""
+
+const instance = axios.create({
+    withCredentials: true,
+    baseURL: baseUrl
+})
+
 // Create context
 export const GlobalContext = createContext(initialState);
 
@@ -18,16 +28,13 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
     const history = useHistory()
-    const baseUrl = process.env.NODE_ENV === "production" ? (
-        "https://evening-escarpment-92494.herokuapp.com"
-    ) : "http://localhost:8080"
 
     // Actions
     async function fetchAllData() {
         if (state.user) {
-            const url = `${baseUrl}/api/v1/transaction?user_id=${state.user._id}`
+            const url = `/api/v1/transaction?user_id=${state.user._id}`
             try {
-                const res = await axios.get(url)
+                const res = await instance.get(url)
                 dispatch({
                     type: 'FETCH_ALL_TRANSACTION',
                     payload: res.data.data
@@ -43,7 +50,7 @@ export const GlobalProvider = ({ children }) => {
 
     async function deleteTransaction(id) {
         try {
-            await axios.delete(`${baseUrl}/api/v1/transaction/${id}`)
+            await instance.delete(`/api/v1/transaction/${id}`)
             dispatch({
                 type: 'DELETE_TRANSACTION',
                 payload: id
@@ -64,7 +71,7 @@ export const GlobalProvider = ({ children }) => {
         }
 
         try {
-            const res = await axios.post(`${baseUrl}/api/v1/transaction/`, transaction, config)
+            const res = await instance.post(`/api/v1/transaction/`, transaction, config)
             dispatch({
                 type: 'ADD_TRANSACTION',
                 payload: res.data.data
@@ -85,13 +92,19 @@ export const GlobalProvider = ({ children }) => {
             }
         }
         try {
-            const res = await axios.post(`${baseUrl}/api/v1/user/signup`, user, config)
-            console.log("response: ", res)
+            const res = await instance.post(`/api/v1/user/`, user, config)
             dispatch({
                 type: 'USER_REGISTER',
                 payload: res.data.user
             });
         } catch (error) {
+            if (error.response.data.error === "User already exists") {
+                dispatch({
+                    type: 'ERROR',
+                    payload: "User already exists"
+                });
+                return
+            }
             dispatch({
                 type: 'ERROR',
                 payload: "Error"
@@ -107,7 +120,7 @@ export const GlobalProvider = ({ children }) => {
             }
         }
         try {
-            const res = await axios.post(`${baseUrl}/api/v1/user/login`, user, config)
+            const res = await instance.post(`/api/v1/user/login`, user, config)
             dispatch({
                 type: 'USER_REGISTER',
                 payload: res.data.user
@@ -121,9 +134,26 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    async function getUser() {
+        try {
+            const res = await instance.get(`/api/v1/user/`)
+            if (res.user) {
+                dispatch({
+                    type: 'USER_REGISTER',
+                    payload: res.data.user
+                });
+            }
+        } catch (error) {
+            dispatch({
+                type: 'ERROR',
+                payload: "Error"
+            });
+        }
+    }
+
     async function logOut() {
         try {
-            await axios.get(`${baseUrl}/api/v1/user/logout`,)
+            await instance.remove(`/api/v1/user/`,)
             dispatch({
                 type: 'USER_LOGOUT',
                 payload: null
@@ -146,6 +176,7 @@ export const GlobalProvider = ({ children }) => {
         addTransaction,
         signUp,
         login,
+        getUser,
         logOut,
         fetchAllData
     }}>
