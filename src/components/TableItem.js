@@ -11,13 +11,15 @@ const TableItem = ({ item, idx }) => {
     const price = amount < 0 ? `-$${Math.abs(amount)}` : `$${amount}`
     const color = amount < 0 ? 'expense' : 'income'
 
+    const formatDate = new Date(date)
+
     return (
         <tr className="table-row">
             <td className={color}>{idx + 1}</td>
             <td>{text}</td>
             <td>{withCommas(price)}</td>
             <td>{category}</td>
-            <td>{date}</td>
+            <td>{formatDate.toLocaleDateString()}</td>
             <td><AiOutlineDelete className="delete-icon" onClick={() => deleteTransaction(_id)} /></td>
         </tr>
     )
