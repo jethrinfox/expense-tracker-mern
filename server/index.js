@@ -32,11 +32,11 @@ const sessionConfig = {
     name: "expense-tracker",
     secret: "superSecretToken",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: store,
     cookie: {
-        sameSite: false,
-        secure: false,
+        secure: true,
+        httpOnly: false,
         maxAge: 1000 * 60 * 60 * 2
     }
 }
