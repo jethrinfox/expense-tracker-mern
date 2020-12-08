@@ -35,8 +35,8 @@ const sessionConfig = {
     saveUninitialized: false,
     store: store,
     cookie: {
-        sameSite: true,
-        secure: ENV === 'production',
+        sameSite: false,
+        secure: false,
         maxAge: 1000 * 60 * 60 * 2
     }
 }
@@ -46,9 +46,9 @@ const sessionConfig = {
 */
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(cors({/* 
-    origin: "https://jethrinfox.github.io/", // <-- location of the react app were connecting to
-    credentials: true, */
+app.use(cors({
+    origin: true, // <-- location of the react app were connecting to
+    credentials: true,
 }))
 app.use(helmet())
 app.use(session(sessionConfig))
